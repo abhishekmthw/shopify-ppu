@@ -1,7 +1,20 @@
-import '../styles/globals.css'
+import DisableSSRProvider from "@/client/components/DisableSSRProvider";
+import AuthProvider from "@/client/auth/AuthProvider";
+import { AppProvider as PolarisProvider } from "@shopify/polaris";
+import enTranslations from "@shopify/polaris/locales/en.json";
+import "@shopify/polaris/build/esm/styles.css";
+import "@/styles/globals.css";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const App = ({ Component, pageProps }) => {
+  return (
+    <DisableSSRProvider>
+      <AuthProvider Component={Component} pageProps={pageProps}>
+        <PolarisProvider i18n={enTranslations}>
+          <Component {...pageProps} />
+        </PolarisProvider>
+      </AuthProvider>
+    </DisableSSRProvider>
+  );
+};
 
-export default MyApp
+export default App;

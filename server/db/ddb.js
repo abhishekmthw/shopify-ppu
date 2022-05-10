@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 
-ANS.config.update({
+AWS.config.update({
   credentials: {
     accesskeyId: process.env.APP_AWS_ACCESS_KEY,
     secretAccesskey: process.env.APP_AWS_SECRET_KEY,

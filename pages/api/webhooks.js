@@ -3,6 +3,7 @@ import handleAppUninstalled from "@/server/webhooks/handlers/handleAppUninstalle
 import handleCustomerDataRequest from "@/server/webhooks/handlers/handleCustomerDataRequest";
 import handleRedactCustomer from "@/server/webhooks/handlers/handleRedactCustomer";
 import handleRedactShop from "@/server/webhooks/handlers/handleRedactShop";
+import { withSentry } from "@sentry/nextjs";
 
 // webhook event is triggered by Shopify
 const handler = async (req, res) => {
@@ -28,10 +29,11 @@ const handler = async (req, res) => {
   res.status(200).json({});
 };
 
-export default handler;
+export default withSentry(handler);
 
 export const config = {
   api: {
     bodyParser: false,
+    externalResolver: true,
   },
 };

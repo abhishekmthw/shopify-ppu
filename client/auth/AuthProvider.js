@@ -3,7 +3,7 @@ import useHost from "@/client/auth/useHost";
 
 const AuthProvider = ({ Component, pageProps, children }) => {
   const host = useHost();
-  if (host) {
+  if (!host) {
     return <Component {...pageProps} />;
   }
 

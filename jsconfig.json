@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": ["styles/"],
-      "@/client/*": ["client/"],
-      "@/server/*": ["server/"]
+      "@/styles/*": ["styles/*"],
+      "@/client/*": ["client/*"],
+      "@/server/*": ["server/*"]
     }
   }
 }

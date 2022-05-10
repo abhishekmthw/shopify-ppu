@@ -6,9 +6,10 @@ import getShopDetails from "@/server/shopify/getShopDetails";
 import saveShopDetails from "@/server/resolvers/saveShopDetails";
 import syncWebhooks from "@/server/webhooks/syncWebhooks";
 import logger from "@/server/logger";
+import { withSentry } from "@sentry/nextjs";
 
 const handler = async (req, res) => {
-  // code, hnac, host, shop, state
+  // code, hmac, host, shop, state
   if (
     !req?.query?.code ||
     !req?.query?.hmac ||
@@ -36,7 +37,7 @@ const handler = async (req, res) => {
     });
   }
 
-  // security check 2 haac is valid and signed by Shopify
+  // security check 2 hmac is valid and signed by Shopify
   const params = new URLSearchParams(req.query);
   params.delete("hmac");
   params.sort();
@@ -111,4 +112,10 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default withSentry(handler);
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

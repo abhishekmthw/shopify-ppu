@@ -45,7 +45,7 @@ export const verifyNonce = async (nonce, shop) => {
     }
   } catch (error) {
     logger.error({
-      msg: `error verifying honce for ${shop}`,
+      msg: `error verifying nonce for ${shop}`,
       error,
     });
     return false;

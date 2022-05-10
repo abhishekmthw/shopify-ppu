@@ -1,8 +1,10 @@
 import nc from "next-connect";
-import withJWT from "server/auth/withJWT";
+import withJWT from "@/server/auth/withJWT";
 import getAccessToken from "@/server/resolvers/getAccessToken";
 import Shopify from "@shopify/shopify-api";
-import logger from "server/logger";
+import logger from "@/server/logger";
+import { withSentry } from "@sentry/nextjs";
+import * as Sentry from "@sentry/nextjs";
 
 const handler = nc().get(async (req, res) => {
   try {
@@ -29,7 +31,17 @@ const handler = nc().get(async (req, res) => {
       msg: "error retrieving products through Graphql API",
       error,
     });
+    Sentry.captureException(error);
+    res.statusCode(422).json({
+      msg: "error retrieving products through Graphql API",
+    });
   }
 });
 
-export default withJWT(handler);
+export default withSentry(withJWT(handler));
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

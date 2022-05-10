@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { createNonce } from "@/server/auth/nonce";
 import checkInstalled from "@/server/resolvers/checkInstalled";
+import { withSentry } from "@sentry/nextjs";
 
 const handler = async (req, res) => {
   const shop = req.body.query.shop;
@@ -23,10 +24,10 @@ const handler = async (req, res) => {
   //check hmac
   const params = new URLSearchParams(req.body.query);
   params.delete("hmac");
-  parans.sort();
+  params.sort();
   const computedHmac = crypto
-    .createlmac("SHA256", process.env.SHOPIFY_SECRET_KEY)
-    .update(parans.toString())
+    .createHmac("SHA256", process.env.SHOPIFY_SECRET_KEY)
+    .update(params.toString())
     .digest("hex");
 
   const hmac_buffer = Buffer.from(hmac);
@@ -57,4 +58,10 @@ const handler = async (req, res) => {
   });
 };
 
-export default handler;
+export default withSentry(handler);
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

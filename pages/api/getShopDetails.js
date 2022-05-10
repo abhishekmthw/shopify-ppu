@@ -2,6 +2,7 @@ import nc from "next-connect";
 import withJWT from "@/auth/withJWT";
 import ddb from "@/db/ddb";
 import logger from "@/server/logger";
+import { withSentry } from "@sentry/nextjs";
 
 const handler = nc().get(async (req, res) => {
   try {
@@ -33,4 +34,10 @@ const handler = nc().get(async (req, res) => {
   }
 });
 
-export default withJWT(handler);
+export default withSentry(withJWT(handler));
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

@@ -1,14 +1,26 @@
-import AWS from "aws-sdk";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
-AWS.config.update({
+const ddbClient = new DynamoDBClient({
+  region: process.env.DYNAMODB_REGION,
   credentials: {
-    accesskeyId: process.env.APP_AWS_ACCESS_KEY,
-    secretAccesskey: process.env.APP_AWS_SECRET_KEY,
+    accessKeyId: process.env.APP_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.APP_AWS_SECRET_KEY,
   },
 });
 
-const ddb = new AWS.DynamoDB.DocumentClient({
-  region: process.env.DYNAMODB_REGION,
-});
+const marshallOptions = {
+  convertEmptyValues: false,
+  removeUndefinedValues: false,
+  convertClassInstanceToMap: false,
+};
+
+const unmarshallOptions = {
+  wrapNumbers: false,
+};
+
+const translateConfig = { marshallOptions, unmarshallOptions };
+
+const ddb = DynamoDBDocumentClient.from(ddbClient, translateConfig);
 
 export default ddb;

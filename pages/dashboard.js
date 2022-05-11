@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Screen1 from "@/client/screens/Screen1";
 import {
   AppProvider as PolarisProvider,
   SkeletonPage,
@@ -8,7 +9,6 @@ import {
   TextContainer,
   SkeletonDisplayText,
 } from "@shopify/polaris";
-import Screen1 from "@/client/screens/Screen1";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);

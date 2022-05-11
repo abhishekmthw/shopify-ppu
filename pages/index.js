@@ -9,22 +9,25 @@ import {
   TextContainer,
   SkeletonDisplayText,
 } from "@shopify/polaris";
-import logger from "@/server/logger";
 
 const Index = () => {
   useEffect(() => {
     const redirect = async () => {
       try {
         const query = Object.fromEntries(
-          URLSearchParams(window.location.search)
+          new URLSearchParams(window.location.search)
         );
         const { data } = await axios.post("/api/auth", { query });
         if (data.redirect) {
-          window.location.href = data.redirect;
-          // to do
+          if (window.parent && !data.embeddedRedirect) {
+            window.parent.location.href = data.redirect;
+          } else {
+            window.location.href = data.redirect;
+          }
         }
       } catch (error) {
-        logger.error({
+        console.log({
+          msg: "error initiating auth",
           error,
         });
       }

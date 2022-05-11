@@ -1,4 +1,4 @@
-import DisableSSRProvider from "@/client/components/DisableSSRProvider";
+import ClientOnly from "@/client/components/ClientOnly";
 import AuthProvider from "@/client/auth/AuthProvider";
 import { AppProvider as PolarisProvider } from "@shopify/polaris";
 import enTranslations from "@shopify/polaris/locales/en.json";
@@ -7,13 +7,13 @@ import "@/styles/globals.css";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <DisableSSRProvider>
+    <ClientOnly>
       <AuthProvider Component={Component} pageProps={pageProps}>
         <PolarisProvider i18n={enTranslations}>
           <Component {...pageProps} />
         </PolarisProvider>
       </AuthProvider>
-    </DisableSSRProvider>
+    </ClientOnly>
   );
 };
 

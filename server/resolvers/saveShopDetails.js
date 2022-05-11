@@ -1,4 +1,5 @@
 import ddb from "@/server/db/ddb";
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import logger from "@/server/logger";
 
 const saveShopDetails = async ({ scope, access_token, shop, details }) => {
@@ -15,7 +16,7 @@ const saveShopDetails = async ({ scope, access_token, shop, details }) => {
         lastLoginAt: Math.floor(Date.now() / 1000),
       },
     };
-    await ddb.put(params).promise();
+    await ddb.send(new PutCommand(params));
   } catch (error) {
     logger.error({
       msg: `error saving the access token for ${shop}`,

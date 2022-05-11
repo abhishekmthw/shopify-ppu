@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import ddb from "@/server/db/ddb";
 import logger from "@/server/logger";
+import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 const saveNonce = async (nonce, shop) => {
   try {
@@ -13,7 +14,7 @@ const saveNonce = async (nonce, shop) => {
         expires_at,
       },
     };
-    await ddb.put(params).promise();
+    await ddb.send(new PutCommand(params));
   } catch (error) {
     logger.error({
       msg: `error saving nonce for ${shop}`,
@@ -37,7 +38,7 @@ export const verifyNonce = async (nonce, shop) => {
         sk: `NONCE#${nonce}`,
       },
     };
-    const result = await ddb.get(params).promise();
+    const result = await ddb.send(new GetCommand(params));
     if (result.Item && result.Item.expires_at > Math.floor(Date.now() / 1000)) {
       return true;
     } else {

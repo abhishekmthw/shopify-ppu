@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, EmptyState, Layout, Page } from "@shopify/polaris";
+import { Page, Layout, Card, EmptyState } from "@shopify/polaris";
 import useJWT from "@/client/auth/useJWT";
 
 const Screen1 = () => {
@@ -14,7 +14,7 @@ const Screen1 = () => {
   };
 
   const getProducts = async () => {
-    const { data } = await api.get("api/shopify/getProducts");
+    const { data } = await api.get("/api/shopify/getProducts");
     const products = data.products;
     console.log(products);
     setProductsAvailable(true);
@@ -56,8 +56,8 @@ const Screen1 = () => {
               </p>
               <p>
                 {productsAvailable
-                  ? "products loaded in console"
-                  : "products loading from Graphql"}
+                  ? "products loaded in console..."
+                  : "loading products from GraphQL..."}
               </p>
             </EmptyState>
           </Card>

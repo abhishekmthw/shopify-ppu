@@ -1,8 +1,8 @@
-import logger from "server/logger";
+import logger from "@/server/logger";
 
 const handleRedactShop = (shop, body) => {
   logger.notice({
-    msg: "[mandatory webhook] shop redact request",
+    msg: `[mandatory webhook] request to redact shop`,
     body,
   });
 };

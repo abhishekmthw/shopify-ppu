@@ -1,5 +1,6 @@
 import ddb from "@/server/db/ddb";
 import logger from "@/server/logger";
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
 
 const getAccessToken = async ({ shop }) => {
   try {
@@ -10,7 +11,7 @@ const getAccessToken = async ({ shop }) => {
         sk: `SHOP#${shop}`,
       },
     };
-    const result = ddb.get(params).promise();
+    const result = await ddb.send(new GetCommand(params));
     if (result.Item && result.Item.access_token) {
       return { access_token: result.Item.access_token };
     } else {
@@ -18,7 +19,7 @@ const getAccessToken = async ({ shop }) => {
     }
   } catch (error) {
     logger.error({
-      msg: `error retrieving access token from ddb for ${shop}`,
+      msg: `error retreiving access token from ddb for ${shop}`,
       error,
     });
   }

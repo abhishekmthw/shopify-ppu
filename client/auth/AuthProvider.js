@@ -12,6 +12,7 @@ const AuthProvider = ({ Component, pageProps, children }) => {
     host,
     forceRedirect: true,
   };
+
   return <AppBridgeProvider config={config}>{children}</AppBridgeProvider>;
 };
 
